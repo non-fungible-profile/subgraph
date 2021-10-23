@@ -1,0 +1,29 @@
+{
+  "name": "non-fungible-profile-subgraph",
+  "author": {
+    "name": "Adam Azad",
+    "email": "adam@adamazad.com",
+    "url": "https://adamazad.com"
+  },
+  "scripts": {
+    "prepare-rinkeby": "mustache config/rinkeby.json subgraph.template.yaml > subgraph.yaml",
+    "prepare-mainnet": "mustache config/xdai.json subgraph.template.yaml > subgraph.yaml",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ --product hosted-service adamazad/non-fungible-profile-rinkeby",
+    "deploy-mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ --product hosted-service adamazad/non-fungible-profile"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.20.1",
+    "@graphprotocol/graph-ts": "^0.20.0",
+    "@openzeppelin/contracts": "^3.4.0",
+    "ts-node": "^9.1.1",
+    "yargs": "^17.1.1"
+  },
+  "devDependencies": {
+    "@types/mustache": "^4.1.2",
+    "@types/node": "^16.4.0",
+    "mustache": "^4.2.0",
+    "typescript": "^4.3.5"
+  }
+}
