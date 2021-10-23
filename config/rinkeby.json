@@ -1,9 +1,9 @@
 {
   "network": "rinkeby",
-  "startBlock": 9515170,
+  "startBlock": 9517770,
   "contracts": {
     "NFP": {
-      "address": "0xf6F8C3F24F6dC118f59a26235b040E722B22E12e"
+      "address": "0x8476aaeF30D39B666FaF4e24FF8c136aa4257e2a"
     }
   }
 }

@@ -1,12 +1,12 @@
 import { log, BigInt } from '@graphprotocol/graph-ts';
-import { ERC721, Transfer as TransferEvent } from '../generated/NFP/ERC721';
-import { Token, Owner, Contract, Transfer } from '../generated/schema';
+import { NFP, Transfer as TransferEvent, SetForegroundNFT as SetForegroundNFTEvent } from '../generated/NFP/NFP';
+import { Token, Owner, Contract, Transfer, Foreground } from '../generated/schema';
 
 export function handleTransfer(event: TransferEvent): void {
   log.debug('Transfer detected. From: {} | To: {} | TokenID: {}', [
     event.params.from.toHexString(),
     event.params.to.toHexString(),
-    event.params.tokenId.toHexString()
+    event.params.tokenId.toHexString(),
   ]);
 
   let previousOwner = Owner.load(event.params.from.toHexString());
@@ -15,7 +15,7 @@ export function handleTransfer(event: TransferEvent): void {
   let transferId = event.transaction.hash.toHexString().concat(':'.concat(event.transactionLogIndex.toHexString()));
   let transfer = Transfer.load(transferId);
   let contract = Contract.load(event.address.toHexString());
-  let instance = ERC721.bind(event.address);
+  let instance = NFP.bind(event.address);
 
   if (previousOwner == null) {
     previousOwner = new Owner(event.params.from.toHexString());
@@ -70,9 +70,9 @@ export function handleTransfer(event: TransferEvent): void {
     contract.symbol = symbol.value;
   }
 
-  let totalSupply = instance.try_totalSupply();
-  if (!totalSupply.reverted) {
-    contract.totalSupply = totalSupply.value;
+  let mintable = instance.try_mintable();
+  if (!mintable.reverted) {
+    contract.totalSupply = mintable.value.value0.plus(mintable.value.value1).plus(mintable.value.value2);
   }
 
   previousOwner.save();
@@ -80,4 +80,25 @@ export function handleTransfer(event: TransferEvent): void {
   token.save();
   contract.save();
   transfer.save();
+}
+
+export function handleSetForegroundNFT(event: SetForegroundNFTEvent): void {
+  let token = Token.load(event.params.id.toHexString());
+  if (token == null) {
+    log.warning('Could not find token {}', [event.params.id.toHexString()]);
+    return;
+  }
+
+  let foreground = new Foreground(
+    event.params.id
+      .toHexString()
+      .concat(event.params.foregroundToken.toHexString())
+      .concat(event.params.foregroundId.toHexString())
+  );
+  foreground.tokenAddress = event.params.foregroundToken.toHexString();
+  foreground.tokenId = event.params.foregroundId.toHexString();
+  foreground.save();
+
+  token.foreground = foreground.id;
+  token.save();
 }

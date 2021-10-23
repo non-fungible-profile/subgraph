@@ -1,9 +1,16 @@
+type Foreground @entity {
+  id: ID!
+  tokenAddress: String!
+  tokenId: String!
+}
+
 type Token @entity {
   id: ID!
   owner: Owner
   uri: String
   transfers: [Transfer!]! @derivedFrom(field: "token")
   contract: Contract
+  foreground: Foreground
 }
 
 type Owner @entity {
