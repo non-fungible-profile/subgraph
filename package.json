@@ -10,8 +10,8 @@
     "prepare-mainnet": "mustache config/xdai.json subgraph.template.yaml > subgraph.yaml",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ --product hosted-service adamazad/non-fungible-profile-rinkeby",
-    "deploy-mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ --product hosted-service adamazad/non-fungible-profile"
+    "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ --product hosted-service luzzif/nfp-rinkeby",
+    "deploy-mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ --product hosted-service luzzif/nfp"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.20.1",
